@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iron Lady FAQ Chatbot</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #6f42c1, #d63384);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      color: white;
+      padding: 2rem 1rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 2rem;
+      background: #fff;
+    }
+
+    .feature {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      flex: 1 1 250px;
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+
+    .feature:hover { transform: translateY(-5px); }
+
+    .feature h3 { color: #6f42c1; margin-bottom: 0.5rem; }
+
+    #chat-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    #chat-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 700px;
+      height: 500px;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    #chat {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      background: #fafafa;
+    }
+
+    .msg {
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 20px;
+      max-width: 75%;
+      line-height: 1.4;
+      word-wrap: break-word;
+      animation: fadeIn 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user {
+      background: #e9ecef;
+      color: #000;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .bot {
+      background: #6f42c1;
+      color: white;
+      align-self: flex-start;
+      margin-right: auto;
+    }
+
+    .bot img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+
+    .bot.talking img {
+      animation: talkAvatar 0.6s infinite;
+    }
+
+    @keyframes talkAvatar {
+      0%, 100% { transform: translateY(0) scaleY(1); }
+      50% { transform: translateY(-2px) scaleY(0.95); }
+    }
+
+    .typing {
+      font-style: italic;
+      color: #666;
+      align-self: flex-start;
+      margin: 5px 0;
+      animation: blink 1s infinite;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .typing.fade-out { opacity: 0; }
+
+    @keyframes blink {
+      0% { opacity: 0.2; }
+      50% { opacity: 1; }
+      100% { opacity: 0.2; }
+    }
+
+    #input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+      background: #f1f3f5;
+      padding: 10px;
+    }
+
+    #q {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-left: 10px;
+      background: #6f42c1;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s ease;
+    }
+
+    button:hover { background: #5a32a3; }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #fff;
+      background: rgba(0,0,0,0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌟 Iron Lady Leadership Programs</h1>
+    <p>Empowering leaders through coaching, mentorship, and bootcamps</p>
+  </header>
+
+
+  <section id="chat-section">
+    <div id="chat-container">
+      <div id="chat"></div>
+      <div id="input-area">
+        <input id="q" placeholder="Ask me about programs, mentors, duration..." />
+        <button onclick="send()">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Iron Lady | Powered by FastAPI + Gemini AI</p>
+  </footer>
+
+  <script>
+    const chatBox = document.getElementById("chat");
+    const input = document.getElementById("q");
+    let typingIndicator;
+
+    function addMsg(who, text) {
+      const div = document.createElement("div");
+      div.className = `msg ${who}`;
+      if (who === "bot") {
+        const avatar = document.createElement("img");
+        avatar.src = "/public/logo.jpg"; // Replace with your avatar
+        div.appendChild(avatar);
+        const span = document.createElement("span");
+        span.textContent = text;
+        div.appendChild(span);
+      } else {
+        div.textContent = text;
+      }
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      return div;
+    }
+
+    function showTyping() {
+      typingIndicator = document.createElement("div");
+      typingIndicator.className = "typing";
+      typingIndicator.textContent = "Iron Lady Assistant is typing...";
+      chatBox.appendChild(typingIndicator);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      const lastBot = chatBox.querySelector(".bot:last-child");
+      if (lastBot) lastBot.classList.add("talking");
+    }
+
+    function removeTyping() {
+      if (typingIndicator) {
+        typingIndicator.classList.add("fade-out");
+        setTimeout(() => {
+          if (typingIndicator) {
+            chatBox.removeChild(typingIndicator);
+            typingIndicator = null;
+          }
+        }, 500);
+      }
+
+      const lastBot = chatBox.querySelector(".bot:last-child");
+      if (lastBot) lastBot.classList.remove("talking");
+    }
+
+    function typeText(element, text, delay = 40) {
+      element.textContent = "";
+      let i = 0;
+      const interval = setInterval(() => {
+        element.textContent += text[i];
+        i++;
+        chatBox.scrollTop = chatBox.scrollHeight;
+        if (i >= text.length) clearInterval(interval);
+      }, delay);
+    }
+
+    async function send() {
+      const q = input.value.trim();
+      if (!q) return;
+
+      addMsg("user", q);
+      input.value = "";
+
+      showTyping();
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ q })
+        });
+
+        const data = await res.json();
+
+        setTimeout(() => {
+          removeTyping();
+          const botDiv = addMsg("bot", "");
+          const span = botDiv.querySelector("span");
+          typeText(span, data.answer || "Sorry, I couldn't find an answer.", 40);
+        }, 1000);
+      } catch (err) {
+        removeTyping();
+        addMsg("bot", "⚠️ Error connecting to server.");
+      }
+    }
+  </script>
+</body>
+</html>

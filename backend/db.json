@@ -1,0 +1,29 @@
+{
+  "faqs": [
+    {
+      "id": 1,
+      "question": "What is Gopal Kumar's professional experience?",
+      "answer": "Gopal Kumar worked at ADRASTI in Bengaluru, India as a Frontend Developer from May 2025 to Nov 2025, designing dynamic frontend interfaces with React.js and integrating real-time data updates using WebSocket and SSE streaming. He also developed interactive UI components for data visualization and automation workflows."
+    },
+    {
+      "id": 2,
+      "question": "What technical skills does Gopal Kumar have?",
+      "answer": "Gopal Kumar has skills in JavaScript, HTML, CSS, React.js, Node.js, Express.js, MongoDB, VS Code, Windows, and GitHub."
+    },
+    {
+      "id": 3,
+      "question": "What projects has Gopal Kumar worked on?",
+      "answer": "Gopal Kumar has worked on several projects: \n1. Chatbot Tutor – AI-powered tutoring chatbot with React.js frontend and Node.js/Express.js backend, including real-time text and image input handling.\n2. Hotel Management System (HMS) – Full-stack hotel management app with room booking, check-in/check-out, billing, and dynamic dashboards.\n3. Customer Relationship Management (CRM) System – Frontend with React.js, backend APIs with Node.js/Express.js, data storage in MongoDB, interactive dashboards for customer interactions.\n4. Real-Time Interactive Dashboard – React.js dashboard with WebSocket and SSE streaming, interactive charts and tables for live data analytics."
+    },
+    {
+      "id": 4,
+      "question": "What is Gopal Kumar's educational background?",
+      "answer": "Gopal Kumar completed MCA from L.N.M.I College in 2022 (CGPA: 6.7), BCA from L.N.M.I College in 2018 (CGPA: 6.1), Intermediate (12th) from B.S.E. B in 2015 (CGPA: 6.1), and Matriculation (10th) from B.S.E. B in 2012 (CGPA: 6.4)."
+    },
+    {
+      "id": 5,
+      "question": "How can Gopal Kumar be contacted?",
+      "answer": "Gopal Kumar can be contacted via email at gopalsharma2711996@gmail.com, phone at +91 9148102985, or LinkedIn at https://www.linkedin.com/in/gopalcodebuster/"
+    }
+  ]
+}
